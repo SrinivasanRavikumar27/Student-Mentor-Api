@@ -4,7 +4,7 @@ const studentRouter = require('express').Router();
 const studentModel = require('../models/studentModel.js');
 
 // to get all datas
-studentRouter.get('/',(request,response) => {
+studentRouter.get('/student',(request,response) => {
 
     studentModel.find({},{}).then( (students) => {
         response.status(200).json(students);
@@ -27,7 +27,7 @@ newStudent.save().then( () => {
 });
 
 // to get single students
-studentRouter.get('/:id', (request,response) => {
+studentRouter.get('/student/:id', (request,response) => {
 
     const id = request.params.id;
     

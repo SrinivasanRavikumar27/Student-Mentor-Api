@@ -4,7 +4,7 @@ const mentorRouter = require('express').Router();
 const mentorModel = require('../models/mentorModel.js');
 
 // to get all datas
-mentorRouter.get('/',(request,response) => {
+mentorRouter.get('/mentor',(request,response) => {
 
     mentorModel.find({},{}).then( (mentors) => {
         response.status(200).json(mentors);
@@ -27,7 +27,7 @@ newMentor.save().then( () => {
 });
 
 // to get single Mentors
-mentorRouter.get('/:id', (request,response) => {
+mentorRouter.get('/mentor/:id', (request,response) => {
 
     const id = request.params.id;
     
