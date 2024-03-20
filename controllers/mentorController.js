@@ -144,16 +144,20 @@ mentorRouter.patch('/:mentorID/student',(request,response) => {
     const mentorID = request.params.mentorID;
 
     //  get data from body of the request
-    let studentId = request.body;
+    const {studentId} = request.body;
+
+    console.log(studentId);
 
     // find the mentor and update students in studentassigned by findbyidandupdate
     mentorModel.findByIdAndUpdate({mentorId : mentorID},{
-        $push : {
-            studentsAssigned : { 
-                $each : studentId
-            }
-        }
-    }).then( (mentor) => {
+        $push: {
+          studentsAssigned: {
+            $each: studentId.split(',').map((id) => id.trim()), // Split the string into an array and trim each element
+          },
+        },
+      },
+      { new: true } // Return the updated document
+      ).then( (mentor) => {
         if(mentor) {
           response.status(200).json({message : "Students added to mentor sucessfully."})
         } else {
