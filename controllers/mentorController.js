@@ -65,7 +65,7 @@ mentorRouter.get('/assignedStudent/:mentorId', (request,response) => {
       ])
       .then( (mentor) => {
         if(mentor.length > 0) {
-          response.status(200).json(mentor[0].studentsAssigned);
+          response.status(200).json(mentor);
         } else {
           response.status(404).json( { message: 'No student record found for this mentor.' });
         }
