@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const mentorSchema = new mongoose.Schema({
     mentorId : String,
     mentorName : String,
-    studentsAssigned : [String],
+    studentsAssigned : [{type : String,default : 'Not Assigned'}], 
 });
 
 // mentor model
