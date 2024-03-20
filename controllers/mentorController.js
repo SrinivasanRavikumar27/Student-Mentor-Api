@@ -144,7 +144,7 @@ mentorRouter.patch('/:mentorID/student',(request,response) => {
     const mentorID = request.params.mentorID;
 
     //  get data from body of the request
-    let studentData = request.body;
+    let studentId = request.body;
 
     // find the mentor and update students in studentassigned by findbyidandupdate
     mentorModel.findByIdAndUpdate({mentorId : mentorID},{
@@ -161,7 +161,7 @@ mentorRouter.patch('/:mentorID/student',(request,response) => {
         }
       })
       .catch( (error) => {
-        response.status(404).json({message : "Error in adding students to mentor"})
+        response.status(404).json({message : "Error in adding students to mentor",error : error})
       });
   });
 
