@@ -135,7 +135,7 @@ studentRouter.get('/previousMentor/:studentid', async (request,response) => {
         
         const studentId = request.params.studentid;
 
-        const previousMentor = await studentModel.findOne({id : studentId},{previous_mentor : 1,_id : 0});
+        const previousMentor = await studentModel.findOne({id : studentId},{id : 1,name : 1,previous_mentor : 1,_id : 0});
 
         if(previousMentor){
             response.status(200).json({message : 'data fetched sucesfully',data : previousMentor});
