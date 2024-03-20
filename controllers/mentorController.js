@@ -59,7 +59,13 @@ mentorRouter.get('/assignedStudent/:mentorId', (request,response) => {
             _id: 0,
             mentorId: 1,
             mentorName: 1,
-            studentsAssigned: "$students.name"
+            studentsAssigned: {
+              $reduce: {
+                input: "$students.name",
+                initialValue: "",
+                in: { $concat: ["$$value", { $cond: [{ $eq: ["$$value", ""] }, "", ", "] }, "$$this"] }
+              }
+            }
           }
         }
       ])
