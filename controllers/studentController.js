@@ -104,14 +104,25 @@ studentRouter.patch("updateStudent/:id", (request, response) => {
 // to change mentor to particular student
 studentRouter.patch(
   "/:studentId/assignedMentor/:mentorId",
-  (request, response) => {
+  async (request, response) => {
     // define id
     const studentId = request.params.studentId;
     const mentorId = request.params.mentorId;
 
+    const previousMentor = await studentModel.findOne(
+      { id: studentId },
+      { current_mentor: 1, _id: 0 }
+    );
+
     // find the student and  assign the mentor using find by id and update
     studentModel
-      .findByIdAndUpdate({ id: studentId }, mentorId)
+      .findOneAndUpdate(
+        { id: studentId },
+        {
+          current_mentor: mentorId,
+          previous_mentor: previousMentor.current_mentor,
+        }
+      )
       .then((mentor) => {
         if (mentor) {
           response
@@ -124,27 +135,37 @@ studentRouter.patch(
       .catch((error) => {
         response
           .status(404)
-          .json({ message: "Error in adding students to mentor" });
+          .json({
+            message: "Error in adding students to mentor",
+            error: error,
+          });
       });
   }
 );
 
 // to get previous mentor from particular student
-studentRouter.get('/previousMentor/:studentid', async (request,response) => {
-    try {
-        
-        const studentId = request.params.studentid;
+studentRouter.get("/previousMentor/:studentid", async (request, response) => {
+  try {
+    const studentId = request.params.studentid;
 
-        const previousMentor = await studentModel.findOne({id : studentId},{id : 1,name : 1,previous_mentor : 1,_id : 0});
+    const previousMentor = await studentModel.findOne(
+      { id: studentId },
+      { id: 1, name: 1, previous_mentor: 1, _id: 0 }
+    );
 
-        if(previousMentor){
-            response.status(200).json({message : 'data fetched sucesfully',data : previousMentor});
-        }
-
-    } catch (error) {
-        response.status(500).json({ message: "getting data for previous mentor from student failed.",
-    errorMessage : error });
+    if (previousMentor) {
+      response
+        .status(200)
+        .json({ message: "data fetched sucesfully", data: previousMentor });
     }
-})
+  } catch (error) {
+    response
+      .status(500)
+      .json({
+        message: "getting data for previous mentor from student failed.",
+        errorMessage: error,
+      });
+  }
+});
 
 module.exports = studentRouter;
