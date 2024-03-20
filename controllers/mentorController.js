@@ -150,7 +150,7 @@ mentorRouter.patch('/:mentorID/student',(request,response) => {
     mentorModel.findByIdAndUpdate({mentorId : mentorID},{
         $push : {
             studentsAssigned : { 
-                $each : studentData
+                $each : studentId
             }
         }
     }).then( (mentor) => {
