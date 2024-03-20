@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 const studentSchema = new mongoose.Schema({
     id : String,
     name : String,
-    mentor : String
+    previous_mentor : {type : String,default : 'Not Assigned'},
+    current_mentor : String
 })
 
 // create model using the schema 
