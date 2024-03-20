@@ -46,11 +46,20 @@ mentorRouter.get('/assignedStudent/:mentorId', (request,response) => {
     
     mentorModel.aggregate([
         { $match: { mentorId: mentorId } },
-        { $lookup: {
-            from: 'student',
-            localField: 'studentsAssigned',
-            foreignField: 'name',
-            as: 'studentsAssigned'
+        {
+          $lookup: {
+            from: "student",
+            localField: "studentsAssigned",
+            foreignField: "name",
+            as: "students"
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            mentorId: 1,
+            mentorName: 1,
+            studentsAssigned: "$students.name"
           }
         }
       ])
